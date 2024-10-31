@@ -1,0 +1,40 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+// A standard android library that uses a Runtime-enabled Ad library to show "ads".
+android {
+    namespace 'com.existing.sdk'
+    privacySandbox {
+        enable = true
+    }
+    defaultConfig {
+        compileSdk 35
+        minSdk 22
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+                targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    //QUESTION: Does the wrapper need this, or does the RA SDK need it?
+    experimentalProperties["android.privacySandboxSdk.apiGenerator.generatedRuntimeDependencies"] =
+        [
+            project.dependencies.create('org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10'),
+            project.dependencies.create("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"),
+            project.dependencies.create("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1"),
+            project.dependencies.create('androidx.privacysandbox.ui:ui-core:1.0.0-alpha10'),
+            project.dependencies.create('androidx.privacysandbox.ui:ui-client:1.0.0-alpha10'),
+            project.dependencies.create('androidx.privacysandbox.activity:activity-core:1.0.0-alpha01'),
+            project.dependencies.create('androidx.privacysandbox.activity:activity-client:1.0.0-alpha01'),
+        ]
+}
+
+dependencies {
+    //Depend on the RA SDK
+    implementation project(':ra-sdk')
+}
