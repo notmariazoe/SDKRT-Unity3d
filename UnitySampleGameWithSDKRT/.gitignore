@@ -105,3 +105,10 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Unity-specific files and folders
+unityLibrary/build/**
+unityLibrary/libs/**
+unityLibrary/symbols/**
+unityLibrary/src/**
+unityLibrary/mobilenotifications.androidlib/**
