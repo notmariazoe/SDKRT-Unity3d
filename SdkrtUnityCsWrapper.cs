@@ -53,6 +53,26 @@ public class SDKRTTest : MonoBehaviour
         // Call the initializeSync method with the runnable
         existingSdkObject.Call("createFileSync", 2, callbackProxy);
     }
+
+    public void LoadBannerAd()
+    {
+        // Get the current Android Activity
+        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+
+        // Create an instance of UnitySdkBridge class
+        AndroidJavaObject existingSdkObject = new AndroidJavaObject("com.example.unitybridge.UnitySdkBridge", currentActivity);
+
+        // Create an Action that will handle the callback from Kotlin
+        System.Action<string> callback = (result) => {
+            textToChange.text = result;
+        };
+
+        AndroidJavaProxy callbackProxy = new BannerAdLoadingCallbackProxy(callback);
+
+        // Call the method
+        existingSdkObject.Call("loadBannerAdSync", currentActivity, "com.unity3d.player", callbackProxy);
+    }
 }
 
 public class InitializationCallbackProxy : AndroidJavaProxy
@@ -85,6 +105,23 @@ public class CreateFileCallbackProxy : AndroidJavaProxy
     public void onFileCreationComplete(string result)
     {
         Debug.Log("and the result is: " + result);
+        _callback(result);
+    }
+}
+
+public class BannerAdLoadingCallbackProxy : AndroidJavaProxy
+{
+    private System.Action<string> _callback;
+
+    public BannerAdLoadingCallbackProxy(System.Action<string> callback)
+        : base("com.example.unitybridge.BannerAdLoadingCallback")
+    {
+        _callback = callback;
+    }
+
+    public void onLoadAdComplete(string result)
+    {
+        Debug.Log("And the result is: " + result);
         _callback(result);
     }
 }

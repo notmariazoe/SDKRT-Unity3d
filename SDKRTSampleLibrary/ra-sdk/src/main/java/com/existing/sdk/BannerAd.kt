@@ -26,7 +26,7 @@ import androidx.privacysandbox.ui.client.view.SandboxedSdkView
 import androidx.privacysandbox.ui.core.SandboxedUiAdapter
 import com.example.api.SdkBannerRequest
 
-class BannerAd(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
+class BannerAd(context: Context, attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
 
     // This method could divert a percentage of requests to a sandboxed SDK and fallback to
     // existing ad logic. For this example, we send all requests to the sandboxed SDK as long as it
